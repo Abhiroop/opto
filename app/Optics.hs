@@ -25,3 +25,8 @@ sign :: Lens Bool Bool Integer Integer
 sign = Lens view update where
   view x = (x >= 0)
   update (b,x) = if b then abs x else -(abs x)
+
+
+data Prism a b s t = Prism { match :: s -> Either t a
+                           , build :: b -> t
+                           }
