@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import Optics
 
 main :: IO ()
-main = someFunc
+main = print "Test optics"
