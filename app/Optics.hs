@@ -15,6 +15,8 @@ data Lens a b s t = Lens{ view   :: s     -> a
 --           ---
 --          update
 
+-- | A Prism type which takes a compound data structure of type S and downcasts it to a possible type A and yields the original S if not possible. Updates the data structure by upcasting the type A to the compound type S
+
 --         match :: if successful then a else Left error
 --          ___
 --         |   |
