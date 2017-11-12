@@ -45,3 +45,12 @@ the = Prism match build where
   match (Just x) = Right x
   match Nothing  = Left Nothing
   build x        = Just x
+
+whole :: Prism Integer Integer Double Double
+whole = Prism match build where
+  match x
+   | f == 0    = Right n
+   | otherwise = Left x
+   where (n,f) = properFraction x
+  build = fromIntegral
+
