@@ -28,3 +28,17 @@ data Prism a b s t = Prism { match :: s -> Either t a
 --            ---
 --           build
 
+
+--            from
+--            ___
+--           |   |
+--           v   |
+data Adapter a b s t = Adapter { from :: s -> a
+                               , to   :: b -> t
+                               }
+--             b   t
+--             |   ^
+--             |   |
+--              ---
+--              to
+
