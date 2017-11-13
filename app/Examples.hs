@@ -35,3 +35,17 @@ whole = Prism match build where
 
 -----------------------------------------------------
 
+------------Bad Composition------------------
+pi11 :: Lens a b ( ( a, c), d) ( ( b, c), d)
+pi11 = Lens view update where
+  Lens v u         =  pi1
+  view             =  v . v
+  update (x',xyz)  =  u (xy', xyz) where
+                             xy   = v xyz
+                             xy'  = u (x',xy)
+---------------------------------------------
+
+flatten :: Adapter ( a, b, c) ( a', b', c') ( ( a, b), c) ( ( a', b'), c')
+flatten = Adapter from to where
+  from ((x,y),z)  = (x,y,z)
+  to (x,y,z)      = ((x,y),z)

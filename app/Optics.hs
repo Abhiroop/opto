@@ -30,7 +30,7 @@ data Prism a b s t = Prism { match :: s -> Either t a
 --            ---
 --           build
 
-
+-- | An Adapter is a specialization of Lens and Prism, where the component being viewed is the entire structure.
 --            from
 --            ___
 --           |   |
