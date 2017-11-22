@@ -1,6 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 module VanLaarhovenLenses where
 
+import Prelude hiding (mod)
 {-
 Lens' s a
 s :: type of the container
@@ -146,3 +147,12 @@ getConst $ ln f s :: discards s and gives a
 
 view :: forall s a . Lens' s a -> s -> a
 view ln s = getConst  $ ln Const s
+
+
+-- Now to prove the isomorphism
+
+lenstolensR :: Lens' s a -> LensR s a
+lenstolensR ln = L {viewR = view ln, setR = set ln, mod = over ln, modF = ln}
+
+lensRtolens :: LensR s a -> Lens' s a
+lensRtolens L {viewR = v, setR = s, mod = m, modF = ln} = ln
