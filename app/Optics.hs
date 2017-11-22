@@ -44,3 +44,12 @@ data Adapter a b s t = Adapter { from :: s -> a
 --              ---
 --              to
 
+
+
+class Profunctor p where
+  dimap :: (a' -> a) -> (b -> b') -> p a b -> p a' b'
+
+data UpStar f a b = UpStar {unUpStar :: a -> f b}
+
+instance Functor f => Profunctor(UpStar f) where
+  dimap f g (UpStar h) = UpStar ((fmap g) . h . f)
