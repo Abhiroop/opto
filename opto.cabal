@@ -17,6 +17,7 @@ library
   hs-source-dirs:      app
   exposed-modules:     Optics
   build-depends:       base >= 4.7 && < 5
+                     , lens
   default-language:    Haskell2010
 
 executable opto-exe
