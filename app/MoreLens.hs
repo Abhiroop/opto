@@ -28,3 +28,26 @@ setPostcode :: String -> Person -> Person
 setPostcode pc p = set (addr.postcode) pc p
 
 data Temp = T { _fahrenheit :: Float}
+
+$(makeLenses ''Temp)
+
+{-
+centi_fn :: Float -> f Float
+
+-}
+centigrade :: Lens' Temp Float
+centigrade centi_fn (T faren)
+   = fmap (\centi' -> T (cToF centi')) (centi_fn (fToC faren))
+
+cToF :: Float -> Float
+cToF = undefined
+
+fToC :: Float -> Float
+fToC = undefined
+
+type Traversal' s a = forall f . Applicative f => (a -> f a) -> (s -> f s)
+
+addr_string :: Traversal' Address String
+addr_string elt_fn (A r c p)
+  = pure (\r' c' -> A r' c' p) <*> (elt_fn r) <*> (elt_fn c)
+
