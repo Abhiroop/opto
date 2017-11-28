@@ -90,9 +90,7 @@ instance Functor Identity where
 
 
 set :: forall s a . Lens' s a -> a -> s -> s
-set ln x s = runIdentity $ ln f s
-  where f :: a -> Identity a
-        f = Identity
+set ln x s = runIdentity $ ln (\_ -> Identity x) s
 
 over' :: forall s a . Lens' s a -> (a -> a) -> s -> s
 over' ln f s = runIdentity $ ln foo s
