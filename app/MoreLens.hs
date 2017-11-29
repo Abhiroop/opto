@@ -1,8 +1,11 @@
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE RankNTypes #-}
 module MoreLens where
 import VanLaarhovenLenses (set)
 import Control.Lens.TH
+import Control.Applicative hiding (Const,getConst)
+import Data.Coerce (coerce)
 data Person = P { _name   :: String
                 , _salary :: Int
                 , _addr   :: Address}
@@ -46,6 +49,23 @@ fToC :: Float -> Float
 fToC = undefined
 
 type Traversal' s a = forall f . Applicative f => (a -> f a) -> (s -> f s)
+
+view :: Monoid a => Traversal' s a -> s -> a
+view ln s = getConst  $ ln Const s
+
+newtype Const v a = Const v
+
+getConst :: Const v a -> v
+getConst (Const x) = x
+
+instance Functor (Const v) where
+  fmap f (Const x) = Const x         -- how does this typecheck?
+
+instance Monoid m => Applicative (Const m) where
+    pure _ = Const mempty
+    (<*>) (Const (atob)) (Const a)  = Const $ mappend atob a--Const $ atob a
+
+
 
 addr_string :: Traversal' Address String
 addr_string elt_fn (A r c p)
