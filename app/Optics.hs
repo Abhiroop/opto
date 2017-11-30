@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 module Optics where
 
 -- | A Lens type which takes compound data structure of type S and focusses onto a small component A. Given a new component of type B updates the old data structure of type B to return a new structure of type T.
@@ -44,7 +45,14 @@ data Adapter a b s t = Adapter { from :: s -> a
 --              ---
 --              to
 
-
+data Traversal a b s t = Traversal {traverse :: forall f . Applicative f =>
+                                    s -> (a -> f b) -> f t}
+--                                  ^    ----------
+--                                  |        ^
+--                                  |        |
+--                                  |   function on 'a'
+--                                  |
+--                           container of 'a's
 
 class Profunctor p where
   dimap :: (a' -> a) -> (b -> b') -> p a b -> p a' b'
