@@ -61,3 +61,15 @@ data UpStar f a b = UpStar {unUpStar :: a -> f b}
 
 instance Functor f => Profunctor(UpStar f) where
   dimap f g (UpStar h) = UpStar ((fmap g) . h . f)
+
+class Profunctor p => Cartesian p where
+  first  :: p a b -> p (a,c) (b,c)
+  second :: p a b -> p (c,a) (c,b)
+
+class Profunctor p => Cocartesian p where
+  left  :: p a b -> p (Either a c) (Either b c)
+  right :: p a b -> p (Either c a) (Either c b)
+
+type Optic p a b s t = p a b -> p s t
+
+type AdapterP a b s t = forall p . Profunctor p => p a b -> p s t
