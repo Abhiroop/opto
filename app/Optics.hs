@@ -124,3 +124,4 @@ type LensP a b s t = forall p . Cartesian p => Optic p a b s t
 type PrismP a b s t = forall p . Cocartesian p => Optic p a b s t
 
 type TraversalP a b s t = forall p . (Cartesian p, Cocartesian p, Monoidal p) => Optic p a b s t
+
