@@ -35,7 +35,7 @@ class Profunctor p => General p t where
  par1 :: p a b -> p c d -> p (t a c) (t b d)
 
 
-instance General (->) (,) where
+instance Bifunctor t => General (->) t where
   par1 = bimap
 
 instance (Monoidal p, Profunctor p) => General p (,) where
