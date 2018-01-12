@@ -66,7 +66,6 @@ instance Monoid m => Applicative (Const m) where
     (<*>) (Const (atob)) (Const a)  = Const $ mappend atob a--Const $ atob a
 
 
-
 addr_string :: Traversal' Address String
 addr_string elt_fn (A r c p)
   = pure (\r' c' -> A r' c' p) <*> (elt_fn r) <*> (elt_fn c)
