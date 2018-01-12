@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 module Examples where
 
 import Optics
@@ -49,3 +50,33 @@ flatten :: Adapter ( a, b, c) ( a', b', c') ( ( a, b), c) ( ( a', b'), c')
 flatten = Adapter from to where
   from ((x,y),z)  = (x,y,z)
   to (x,y,z)      = ((x,y),z)
+
+------------Profunctor optics example--------------------
+
+-- Example from http://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/poptics.pdf
+
+prismC2P :: Prism a b s t -> PrismP a b s t
+prismC2P (Prism m b) = dimap m (either id b) . right
+
+lensC2P :: Lens a b s t -> LensP a b s t
+lensC2P (Lens v u) = dimap (fork v id) u . first where
+  fork f g x = (f x, g x)
+
+data Tree a = Empty | Node (Tree a) a (Tree a)
+
+type Number = String
+type ID = String
+type Name = String
+data Contact = Phone Number | Skype ID
+data Entry = Entry Name Contact
+type Book = Tree Entry
+
+phone :: PrismP Number Number Contact Contact
+phone = prismC2P (Prism m Phone) where
+  m (Phone n) = Right n
+  m(Skype s) =Left(Skype s)
+
+contact :: LensP Contact Contact Entry Entry
+contact = lensC2P (Lens v u) where
+  v (Entry n c) = c
+  u (c',Entry n c) = Entry n c'

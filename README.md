@@ -23,3 +23,4 @@ let p = P {name = "Fred", salary = 500}
 > view nameL p
 > "Fred"
 ```
+Some more examples of Profunctor Optics in action at `Examples.hs`
